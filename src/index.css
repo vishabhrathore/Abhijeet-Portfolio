@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --color-ink: #111110;
+  --color-accent: #0057FF;
+  --color-off-white: #F8F8F6;
+  --color-warm-white: #F0EFEB;
+  --color-mid-gray: #5A5A56;
+  --color-light-border: #E0DFD8;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-ink font-body selection:bg-accent selection:text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+.glass {
+  @apply bg-white/80 backdrop-blur-md;
+}
+
+.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  opacity: 0.04;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+}
+
+.timeline-line {
+  @apply absolute left-0 top-0 bottom-0 w-[1px] bg-light-border;
+}
+
+.timeline-dot {
+  @apply absolute left-[-4.5px] top-2 w-2.5 h-2.5 rounded-full bg-accent shadow-[0_0_10px_rgba(0,87,255,0.5)];
+}
