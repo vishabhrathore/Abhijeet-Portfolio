@@ -26,9 +26,12 @@ import {
   Settings,
   Lock,
   BarChart3,
-  RefreshCw
+  RefreshCw,
+  Send,
+  Loader2
 } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 // --- Components ---
 
@@ -51,7 +54,7 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="text-2xl font-display font-bold tracking-tighter">AS</div>
+        <div className="text-2xl font-display font-bold tracking-tight">AS</div>
         <div className="hidden md:flex gap-8">
           {["About", "Experience", "Skills", "Awards", "Contact"].map((item) => (
             <a
@@ -86,7 +89,7 @@ const Hero = () => {
         className="mb-8"
       >
         <span className="px-4 py-1.5 border border-ink/20 rounded-full text-xs font-medium uppercase tracking-widest text-mid-gray">
-          Cloud / DevOps Engineer · 2.7+ Years
+          Cloud / DevOps Engineer · 2.9+ Years
         </span>
       </motion.div>
 
@@ -94,7 +97,7 @@ const Hero = () => {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.15 }}
-        className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-center tracking-tighter mb-6 group cursor-default"
+        className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-center tracking-tight leading-[1.1] mb-6 group cursor-default"
       >
         <span className="inline-block transition-all duration-500 group-hover:tracking-normal">
           ABHIJEET SINGH
@@ -159,7 +162,7 @@ const About = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           let start = 0;
-          const end = 2.7;
+          const end = 2.9;
           const duration = 1500;
           const increment = end / (duration / 16);
           const timer = setInterval(() => {
@@ -189,11 +192,11 @@ const About = () => {
           transition={{ duration: 0.6 }}
           className="md:col-span-4 relative"
         >
-          <div className="absolute -top-12 -left-8 text-[12rem] font-display font-bold text-ink/5 leading-none select-none">
-            2.7+
+          <div className="absolute -top-12 -left-8 text-[12rem] font-display font-bold text-ink/5 leading-tight select-none">
+            2.9+
           </div>
           <div className="relative">
-            <h2 className="text-7xl md:text-8xl font-display font-bold text-ink leading-none">
+            <h2 className="text-7xl md:text-8xl font-display font-bold text-ink leading-tight">
               {count.toFixed(1)}+
             </h2>
             <p className="text-lg font-medium uppercase tracking-widest text-accent mt-2">
@@ -210,7 +213,7 @@ const About = () => {
           className="md:col-span-6"
         >
           <p className="text-xl md:text-2xl text-mid-gray leading-relaxed mb-8">
-            Cloud / DevOps Engineer with 2.7+ years of experience in designing, deploying, and managing scalable cloud infrastructure. Expert in AWS services, CI/CD automation, and containerization. Proven track record in optimizing cloud costs and enhancing system reliability through robust DevOps practices.
+            Cloud / DevOps Engineer with 2.9+ years of experience in designing, deploying, and managing scalable cloud infrastructure. Expert in AWS services, CI/CD automation, and containerization. Proven track record in optimizing cloud costs and enhancing system reliability through robust DevOps practices.
           </p>
           <div className="flex flex-wrap gap-3">
             {["AWS Expert", "CI/CD Builder", "Cost Optimizer"].map((badge) => (
@@ -248,14 +251,23 @@ const Experience = () => {
   return (
     <section id="experience" className="py-24 bg-white">
       <div className="max-w-3xl mx-auto px-6">
-        <motion.h2
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-4xl font-display font-bold mb-16 text-center"
-        >
-          Professional Experience
-        </motion.h2>
+        <div className="flex flex-col items-center mb-20">
+          <motion.h2
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-display font-bold mb-4 text-center"
+          >
+            Professional Experience
+          </motion.h2>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: 60 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="h-1 bg-accent rounded-full"
+          />
+        </div>
 
         <div className="relative pl-8">
           <motion.div 
@@ -275,12 +287,14 @@ const Experience = () => {
               transition={{ duration: 0.6 }}
               className="relative mb-12"
             >
-              <div className="timeline-dot" />
-              <div className="p-8 border border-light-border rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="timeline-dot top-[42px]" />
+              <motion.div 
+                whileHover={{ x: 4 }}
+                className="p-8 border border-light-border rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300"
+              >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                   <div>
-                    <h3 className="text-2xl font-display font-bold text-ink flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    <h3 className="text-2xl font-display font-bold text-ink py-1 leading-tight">
                       {exp.role}
                     </h3>
                     <p className="text-mid-gray font-medium">{exp.company}</p>
@@ -288,7 +302,7 @@ const Experience = () => {
                   <div className="flex flex-col items-end">
                     <span className="text-sm font-medium text-mid-gray">{exp.period}</span>
                     {exp.isPresent && (
-                      <span className="mt-1 px-2 py-0.5 bg-accent text-white text-[10px] font-bold uppercase tracking-tighter rounded">
+                      <span className="mt-1 px-2 py-0.5 bg-accent text-white text-[10px] font-bold uppercase tracking-tight rounded">
                         Present
                       </span>
                     )}
@@ -310,7 +324,7 @@ const Experience = () => {
                     </motion.li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
@@ -361,7 +375,7 @@ const Skills = () => {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
-          className="text-4xl font-display font-bold mb-16 text-center"
+          className="text-4xl font-display font-bold mb-16 text-center py-1"
         >
           Technical Arsenal
         </motion.h2>
@@ -449,7 +463,7 @@ const Awards = () => {
               >
                 🏆
               </motion.div>
-              <h3 className="text-lg font-display font-bold text-ink mb-2">{award.title}</h3>
+              <h3 className="text-lg font-display font-bold text-ink mb-2 py-1 leading-tight">{award.title}</h3>
               <p className="text-accent font-bold text-sm tracking-widest">{award.year}</p>
             </motion.div>
           ))}
@@ -488,7 +502,7 @@ const Education = () => {
               className="group"
             >
               <div className="flex justify-between items-end mb-2">
-                <h3 className="text-xl font-display font-bold text-ink">{edu.degree}</h3>
+                <h3 className="text-xl font-display font-bold text-ink py-1 leading-tight">{edu.degree}</h3>
                 <span className="text-accent font-bold text-sm">{edu.year}</span>
               </div>
               <p className="text-mid-gray mb-4">{edu.institution}</p>
@@ -515,7 +529,7 @@ const Training = () => {
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
-          className="text-4xl font-display font-bold mb-16 text-center"
+          className="text-4xl font-display font-bold mb-16 text-center py-2"
         >
           Specialized Training
         </motion.h2>
@@ -533,13 +547,124 @@ const Training = () => {
               transition={{ delay: idx * 0.15 }}
               className="p-8 border border-light-border border-t-4 border-t-ink rounded-xl bg-white shadow-sm hover:shadow-md transition-all duration-300"
             >
-              <h3 className="text-xl font-display font-bold text-ink mb-2">{item.title}</h3>
+              <h3 className="text-xl font-display font-bold text-ink mb-2 py-1 leading-tight">{item.title}</h3>
               <p className="text-mid-gray">{item.desc}</p>
             </motion.div>
           ))}
         </div>
       </div>
     </section>
+  );
+};
+
+const ContactForm = () => {
+  const [status, setStatus] = useState("");
+  const [statusColor, setStatusColor] = useState("white/60");
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({ name: "", contact: "", message: "" });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.contact.length !== 10) {
+      setStatusColor("text-red-400");
+      setStatus("❌ Contact number must be exactly 10 digits.");
+      return;
+    }
+
+    setIsLoading(true);
+    setStatusColor("text-white/60");
+    setStatus("Sending request...");
+
+    emailjs
+      .send(
+        "YOUR_SERVICE_ID", // Replace with your Service ID
+        "YOUR_TEMPLATE_ID", // Replace with your Template ID
+        {
+          name: `${formData.name} | Contact Number: ${formData.contact}`,
+          message: formData.message,
+        },
+        "YOUR_PUBLIC_KEY" // Replace with your Public Key
+      )
+      .then(() => {
+        setStatusColor("text-emerald-400");
+        setStatus("✅ Request sent successfully!");
+        setFormData({ name: "", contact: "", message: "" });
+        setIsLoading(false);
+        setTimeout(() => setStatus(""), 5000);
+      })
+      .catch((err) => {
+        console.error("EmailJS Error:", err);
+        setStatusColor("text-red-400");
+        setStatus("❌ Failed to send request. Please try again.");
+        setIsLoading(false);
+      });
+  };
+
+  return (
+    <motion.div
+      initial={{ y: 40, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      className="max-w-2xl mx-auto mb-20 p-8 border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm"
+    >
+      <form onSubmit={handleSubmit} className="space-y-6 text-left">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-white/60 ml-1">Name</label>
+            <input
+              required
+              type="text"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-accent transition-colors text-white placeholder:text-white/20"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-white/60 ml-1">Contact Number</label>
+            <input
+              required
+              type="text"
+              placeholder="10-digit number"
+              maxLength={10}
+              value={formData.contact}
+              onChange={(e) => setFormData({ ...formData, contact: e.target.value.replace(/[^0-9]/g, "") })}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-accent transition-colors text-white placeholder:text-white/20"
+            />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-widest text-white/60 ml-1">What help do you need?</label>
+          <textarea
+            required
+            rows={4}
+            placeholder="Describe your requirements..."
+            value={formData.message}
+            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-accent transition-colors text-white placeholder:text-white/20 resize-none"
+          />
+        </div>
+        
+        <button
+          disabled={isLoading}
+          type="submit"
+          className="w-full py-4 bg-accent hover:bg-accent/90 disabled:bg-accent/50 text-white font-bold uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2 group"
+        >
+          {isLoading ? (
+            <Loader2 className="animate-spin" size={20} />
+          ) : (
+            <>
+              Send Request <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </>
+          )}
+        </button>
+
+        {status && (
+          <p className={`text-sm text-center font-medium ${statusColor}`}>{status}</p>
+        )}
+      </form>
+    </motion.div>
   );
 };
 
@@ -569,13 +694,15 @@ const Footer = () => {
   return (
     <footer id="contact" className="bg-ink text-white py-24" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 min-h-[1.2em]">
+        <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 min-h-[1.2em] py-1">
           {text}
           <span className="animate-pulse">|</span>
         </h2>
         <p className="text-mid-gray text-lg md:text-xl mb-12 max-w-xl mx-auto">
           Open to new opportunities and collaborations.
         </p>
+
+        <ContactForm />
 
         <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-16">
           {[

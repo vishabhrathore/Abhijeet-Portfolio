@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Syne", sans-serif;
-  --font-body: "DM Sans", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
 
   --color-ink: #111110;
   --color-accent: #0057FF;
@@ -41,9 +41,9 @@
 }
 
 .timeline-line {
-  @apply absolute left-0 top-0 bottom-0 w-[1px] bg-light-border;
+  @apply absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-accent/50 via-light-border to-light-border/20;
 }
 
 .timeline-dot {
-  @apply absolute left-[-4.5px] top-2 w-2.5 h-2.5 rounded-full bg-accent shadow-[0_0_10px_rgba(0,87,255,0.5)];
+  @apply absolute left-[-5px] w-2.5 h-2.5 rounded-full bg-accent ring-4 ring-accent/10 shadow-[0_0_15px_rgba(0,87,255,0.4)];
 }
