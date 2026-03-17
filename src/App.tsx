@@ -86,7 +86,7 @@ const Hero = () => {
         className="mb-8"
       >
         <span className="px-4 py-1.5 border border-ink/20 rounded-full text-xs font-medium uppercase tracking-widest text-mid-gray">
-          Cloud / DevOps Engineer · 2.7+ Years
+          Cloud / DevOps Engineer · 2.9+ Years
         </span>
       </motion.div>
 
@@ -159,7 +159,7 @@ const About = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           let start = 0;
-          const end = 2.7;
+          const end = 2.9;
           const duration = 1500;
           const increment = end / (duration / 16);
           const timer = setInterval(() => {
